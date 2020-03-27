@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import * as yup from 'yup';
+import Link from 'react-router-dom';
 
 const formSchema= yup.object().shape({
     name: yup.string().required("name required").min(2, "name must be more than 2 characters"),
@@ -99,5 +100,120 @@ export default function Form(){
         validateChange(e);
         setFormState(newFormData);
     };
-    
+
+    return (
+
+    <form onSubmit={formSubmit}>
+            <Link to={"/"}>
+                <div>Home</div>
+            </Link>
+        
+            <h1>If you could be any flavor...what flavor would you be?</h1>
+            <label htmlFor="name">
+                Name: 
+                <input
+                    id="name" // connects to the htmlFor
+                    type="text"
+                    name="name"
+                    value={formState.name}
+                    onChange={inputChange}
+                />
+            {errors.name.length > 0 ? <p className="error">{errors.name}</p> : null} 
+            </label> <br/>
+
+            <label htmlFor="size">
+                What size pizza?
+                 <select 
+                    id="size" 
+                    name="size" 
+                    onChange={inputChange}>
+                    <option value="small">small '8'</option>
+                    <option value="medium">medium '12'</option>
+                    <option value="large">large '18'</option>
+                </select>
+            </label> <br/>
+            {/* name:"",
+        size:"",
+        pepperoni:"",
+        sausage:"",
+        onion:"",
+        spinach:"",
+        instructions:"",
+        terms:"" */}
+
+            <label htmlFor="pepperoni">
+                pepperoni 
+                <input
+                    id="pepperoni"
+                    type="checkbox"
+                    name="pepperoni"
+                    value={formState.pepperoni}
+                    onChange={inputChange}
+                />
+                 {errors.pepperoni.length > 0 ? <p className="error">{errors.pepperoni}</p> : null} 
+            </label> <br/>
+
+            <label htmlFor="sausage">
+            sausage 
+                <input
+                    id="sausage"
+                    type="checkbox"
+                    name="sausage"
+                    value={formState.sausage}
+                    onChange={inputChange}
+                />
+                 {errors.sausage.length > 0 ? <p className="error">{errors.sausage}</p> : null} 
+            </label> <br/>
+
+            <label htmlFor="onion">
+            onion 
+                <input
+                    id="onion"
+                    type="checkbox"
+                    name="onion"
+                    value={formState.onion}
+                    onChange={inputChange}
+                />
+                 {errors.onion.length > 0 ? <p className="error">{errors.onion}</p> : null} 
+            </label> <br/>
+
+            <label htmlFor="spinach">
+            spinach 
+                <input
+                    id="spinach"
+                    type="checkbox"
+                    name="spinach"
+                    value={formState.sausage}
+                    onChange={inputChange}
+                />
+                 {errors.spinach.length > 0 ? <p className="error">{errors.spinach}</p> : null} 
+            </label> <br/>
+
+            <label htmlFor="instructions">
+                Any special request? 
+                <textarea
+                    id="instructions"
+                    name="instructions"
+                    value={formState.instructions}
+                    onChange={inputChange}
+                />
+                 {errors.instructions.length > 0 ? <p className="error">{errors.instructions}</p> : null} 
+            </label> <br/>
+            
+            <label htmlFor="terms">
+                No refunds!
+                <input
+                    id="terms"
+                    type="checkbox"
+                    name="terms"
+                    checked={formState.terms}
+                    onChange={inputChange}
+                />
+                 {errors.terms.length > 0 ? <p className="error">{errors.terms}</p> : null} 
+            </label>
+              {/* displaying our post request data */}
+              <pre>{JSON.stringify(post, null, 2)}</pre>
+              <button disabled={button}>Submit</button>
+        </form>
+    )
 }
