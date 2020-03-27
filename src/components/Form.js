@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import * as yup from 'yup';
-import Link from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const formSchema= yup.object().shape({
     name: yup.string().required("name required").min(2, "name must be more than 2 characters"),
     size: yup.string().required("select size pizza"),
-    pepperoni: yup.boolean().oneof([true], "pepperoni"),
-    sausage: yup.boolean().oneof([true], "sausage"),
-    onion: yup.boolean().oneof([true], "onion"),
-    spinach: yup.boolean().oneof([true], "spinach"),
+    pepperoni: yup.boolean().oneOf([true || false]),
+    sausage: yup.boolean().oneOf([true || false]),
+    onion: yup.boolean().oneOf([true || false]),
+    spinach: yup.boolean().oneOf([true || false]),
     instructions: yup.string().required("any special instructions?"),
-    terms: yup.boolean().oneOf([true], "must agrree to terms")
+    // terms: yup.boolean().oneOf([true], "must agrree to terms")
 })
 
 export default function Form(){
@@ -18,15 +19,11 @@ export default function Form(){
     const [button, setButton] = useState(true);
 
     //state for form
-    const [fromState, setFormState] = useState({
+    const [formState, setFormState] = useState({
         name:"",
         size:"",
-        pepperoni:"",
-        sausage:"",
-        onion:"",
-        spinach:"",
         instructions:"",
-        terms:""
+        // terms:""
     });
 
     //state for error
@@ -34,12 +31,8 @@ export default function Form(){
     const [errors,setErrors] = useState({
         name:"",
         size:"",
-        pepperoni:"",
-        sausage:"",
-        onion:"",
-        spinach:"",
         instructions:"",
-        terms:""
+        // terms:""
     });
 
     //state for post
@@ -56,7 +49,7 @@ export default function Form(){
     const formSubmit = e => {
         e.preventDefault();
         axios
-            .post("https://")
+            .post("https://reqres.in/api/order", formState)
             .then(res => {
                 SetPost(res.data);
 
@@ -68,7 +61,7 @@ export default function Form(){
                     onion:"",
                     spinach:"",
                     instructions:"",
-                    terms:""
+                    // terms:""
                 })
             })
             .catch(err => console.log("something went wrong when submitting your form", err.response));
@@ -76,7 +69,7 @@ export default function Form(){
     const validateChange = e => {
         yup
         .reach(formSchema, e.target.name)
-        .validate(e.target.name === "terms" ? e.target.checked : e.target.value)
+        .validate(e.target.name === "checkbox" ? e.target.checked : e.target.value)
         .then(valid => {
             setErrors({
                 ...errors,
@@ -108,7 +101,7 @@ export default function Form(){
                 <div>Home</div>
             </Link>
         
-            <h1>If you could be any flavor...what flavor would you be?</h1>
+            <h1>faster you fill this out the faster your pizza will appear</h1>
             <label htmlFor="name">
                 Name: 
                 <input
@@ -132,14 +125,6 @@ export default function Form(){
                     <option value="large">large '18'</option>
                 </select>
             </label> <br/>
-            {/* name:"",
-        size:"",
-        pepperoni:"",
-        sausage:"",
-        onion:"",
-        spinach:"",
-        instructions:"",
-        terms:"" */}
 
             <label htmlFor="pepperoni">
                 pepperoni 
@@ -150,7 +135,7 @@ export default function Form(){
                     value={formState.pepperoni}
                     onChange={inputChange}
                 />
-                 {errors.pepperoni.length > 0 ? <p className="error">{errors.pepperoni}</p> : null} 
+                 {/* {errors.pepperoni.length > 0 ? <p className="error">{errors.pepperoni}</p> : null}  */}
             </label> <br/>
 
             <label htmlFor="sausage">
@@ -162,7 +147,7 @@ export default function Form(){
                     value={formState.sausage}
                     onChange={inputChange}
                 />
-                 {errors.sausage.length > 0 ? <p className="error">{errors.sausage}</p> : null} 
+                 {/* {errors.sausage.length > 0 ? <p className="error">{errors.sausage}</p> : null}  */}
             </label> <br/>
 
             <label htmlFor="onion">
@@ -174,7 +159,7 @@ export default function Form(){
                     value={formState.onion}
                     onChange={inputChange}
                 />
-                 {errors.onion.length > 0 ? <p className="error">{errors.onion}</p> : null} 
+                 {/* {errors.onion.length > 0 ? <p className="error">{errors.onion}</p> : null}  */}
             </label> <br/>
 
             <label htmlFor="spinach">
@@ -186,7 +171,7 @@ export default function Form(){
                     value={formState.sausage}
                     onChange={inputChange}
                 />
-                 {errors.spinach.length > 0 ? <p className="error">{errors.spinach}</p> : null} 
+                 {/* {errors.spinach.length > 0 ? <p className="error">{errors.spinach}</p> : null}  */}
             </label> <br/>
 
             <label htmlFor="instructions">
@@ -200,7 +185,7 @@ export default function Form(){
                  {errors.instructions.length > 0 ? <p className="error">{errors.instructions}</p> : null} 
             </label> <br/>
             
-            <label htmlFor="terms">
+            {/* <label htmlFor="terms">
                 No refunds!
                 <input
                     id="terms"
@@ -210,7 +195,7 @@ export default function Form(){
                     onChange={inputChange}
                 />
                  {errors.terms.length > 0 ? <p className="error">{errors.terms}</p> : null} 
-            </label>
+            </label> */}
               {/* displaying our post request data */}
               <pre>{JSON.stringify(post, null, 2)}</pre>
               <button disabled={button}>Submit</button>
